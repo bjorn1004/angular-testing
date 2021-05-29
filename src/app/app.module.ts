@@ -8,6 +8,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { NavComponent } from './nav/nav.component';
 import { SharedModule } from './modules/shared/shared.module';
+import { HomeModule } from './modules/home/home.module';
 
 @NgModule({
 	declarations: [AppComponent, NavComponent],
@@ -22,6 +23,7 @@ import { SharedModule } from './modules/shared/shared.module';
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
 		SharedModule,
+		HomeModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

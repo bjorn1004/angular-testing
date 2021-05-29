@@ -67,6 +67,11 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
+                },
+                {
+                  "type": "all",
+                  "maximumWarning": "750mb",
+                  "maximumError": "1gb"
                 }
               ],
               "serviceWorker": true,
