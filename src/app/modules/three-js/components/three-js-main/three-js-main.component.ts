@@ -28,15 +28,15 @@ export class ThreeJsMainComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.renderView) {
 			this.renderView.nativeElement.height = this.renderView.nativeElement.clientHeight;
 			this.renderView.nativeElement.width = this.renderView.nativeElement.clientWidth;
-			this.setupRenderLoop(this.setupScene(this.renderView));
+			this.#setupRenderLoop(this.#setupScene(this.renderView));
 		}
 	}
 
 	ngOnDestroy() {
-		this.cleanupRenderView();
+		this.#cleanupRenderView();
 	}
 
-	private setupScene(renderView: ElementRef<HTMLCanvasElement>) {
+	#setupScene(renderView: ElementRef<HTMLCanvasElement>) {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(
 			75,
@@ -56,7 +56,7 @@ export class ThreeJsMainComponent implements OnInit, AfterViewInit, OnDestroy {
 		return { renderer, scene, camera, cube };
 	}
 
-	private setupRenderLoop({
+	#setupRenderLoop({
 		renderer,
 		scene,
 		camera,
@@ -78,7 +78,7 @@ export class ThreeJsMainComponent implements OnInit, AfterViewInit, OnDestroy {
 		animate();
 	}
 
-	private cleanupRenderView() {
+	#cleanupRenderView() {
 		// stop render loop
 		this.#active = false;
 	}
