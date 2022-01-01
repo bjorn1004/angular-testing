@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-card-content [ngStyle]="{'grid-template-columns': 'repeat(' + width + ', 1fr)', 'grid-template-rows': 'repeat(' + height + ', 1fr)'}">
+        <app-minesweeper-tile *ngFor="let tile of tileList; index as i"
+        [id]="i"
+        [(clicked)]="tile.isClicked"
+        (clickedChange)="onClickTile(tile)"
+        [(marked)]="tile.isMarked"
+        (markedChange)="onMarkTile(tile)"
+        [tileState]="tile.tileState"
+        ></app-minesweeper-tile>
+    </mat-card-content>
+    <div class="overlay" *ngIf="[gameStateEnum.NEW, gameStateEnum.IN_PROGRESS].indexOf(gameState) === -1">
+        <span>{{gameState === gameStateEnum.WON ? 'you are win' : 'lose'}}</span>
+    </div>
+</mat-card>

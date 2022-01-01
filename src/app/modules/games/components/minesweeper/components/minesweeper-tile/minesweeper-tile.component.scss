@@ -1,0 +1,35 @@
+.mat-flat-button {
+	height: 5em;
+	width: 5em;
+	border-radius: 0;
+	&.mat-accent,
+	&.mat-warn {
+		cursor: unset;
+	}
+	&.mat-accent {
+		&.neighbours-1 {
+			background: darken($color: #2962ff, $amount: 10);
+		}
+		&.neighbours-2 {
+			background: #06a77d;
+		}
+		&.neighbours-3 {
+			background: darken($color: #06a77d, $amount: 10);
+		}
+		&.neighbours-4 {
+			background: #d5c67a;
+		}
+		&.neighbours-5 {
+			background: darken($color: #d5c67a, $amount: 10);
+		}
+		&.neighbours-6 {
+			background: #f1a208;
+		}
+		&.neighbours-7 {
+			background: darken($color: #f1a208, $amount: 10);
+		}
+		&.neighbours-8 {
+			background: #e85f5c;
+		}
+	}
+}

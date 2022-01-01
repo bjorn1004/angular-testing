@@ -6,6 +6,7 @@ const routes: Routes = [
 		path: 'threejs',
 		loadChildren: () => import('./modules/three-js/three-js.module').then((m) => m.ThreeJSModule),
 	},
+	{ path: 'games', loadChildren: () => import('./modules/games/games.module').then((m) => m.GamesModule) },
 ];
 
 @NgModule({

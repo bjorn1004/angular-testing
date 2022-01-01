@@ -1,6 +1,17 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import * as THREE from 'three';
+import { animationFrameScheduler, of, Subject } from 'rxjs';
+import { finalize, repeat, takeUntil } from 'rxjs/operators';
+import {
+	BoxGeometry,
+	BufferGeometry,
+	Material,
+	Mesh,
+	MeshBasicMaterial,
+	PerspectiveCamera,
+	Scene,
+	WebGLRenderer,
+} from 'three';
 
 @Component({
 	selector: 'app-three-js-main',
@@ -9,7 +20,13 @@ import * as THREE from 'three';
 })
 export class ThreeJsMainComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('renderView') renderView: ElementRef<HTMLCanvasElement> | undefined;
-	#active = true;
+	#camera: PerspectiveCamera | undefined;
+	#geometryArray: BufferGeometry[] = [];
+	#materialArray: Material[] = [];
+	#meshArray: Mesh[] = [];
+	#scene: Scene | undefined;
+	#renderer: WebGLRenderer | undefined;
+	#cleanupSubject: Subject<void> = new Subject();
 
 	constructor(private viewPortRuler: ViewportRuler) {}
 
@@ -32,54 +49,74 @@ export class ThreeJsMainComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	ngOnDestroy() {
-		this.#cleanupRenderView();
+	ngOnDestroy(): void {
+		this.#cleanupSubject.next();
+		this.#cleanupSubject.complete();
 	}
 
 	#setupScene(renderView: ElementRef<HTMLCanvasElement>) {
-		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(
+		this.#scene = new Scene();
+		this.#camera = new PerspectiveCamera(
 			75,
 			renderView.nativeElement.clientWidth / renderView.nativeElement.clientHeight,
 			0.1,
 			1000
 		);
 
-		const geometry = new THREE.BoxGeometry();
-		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-		const cube = new THREE.Mesh(geometry, material);
-		scene.add(cube);
+		const geometry = this.#geometryArray.push(new BoxGeometry()) - 1;
+		const material = this.#materialArray.push(new MeshBasicMaterial({ color: 0x00ff00 })) - 1;
+		const cube = this.#meshArray.push(new Mesh(this.#geometryArray[geometry], this.#materialArray[material])) - 1;
+		this.#scene.add(this.#meshArray[cube]);
 
-		camera.position.z = 5;
+		this.#camera.position.z = 5;
 
-		const renderer = new THREE.WebGLRenderer({ canvas: renderView.nativeElement });
-		return { renderer, scene, camera, cube };
+		this.#renderer = new WebGLRenderer({ canvas: renderView.nativeElement });
+		return cube;
 	}
 
-	#setupRenderLoop({
-		renderer,
-		scene,
-		camera,
-		cube,
-	}: {
-		renderer: THREE.WebGLRenderer;
-		scene: THREE.Scene;
-		camera: THREE.PerspectiveCamera;
-		cube: THREE.Mesh<THREE.BoxGeometry>;
-	}) {
-		const animate = () => {
-			if (this.#active) {
-				const frame = requestAnimationFrame(animate);
-			}
-			cube.rotation.x += 0.01;
-			cube.rotation.y += 0.01;
-			renderer.render(scene, camera);
-		};
-		animate();
+	#setupRenderLoop(cube: number) {
+		let frame = 0;
+		of(null, animationFrameScheduler)
+			.pipe(
+				repeat(),
+				takeUntil(this.#cleanupSubject),
+				finalize(() => this.#cleanupRenderView())
+			)
+			.subscribe(() => {
+				frame++;
+				this.#meshArray[cube].rotation.x += 0.01;
+				this.#meshArray[cube].rotation.y += 0.01;
+				if (this.#scene && this.#camera) {
+					(this.#renderer as WebGLRenderer).render(this.#scene, this.#camera);
+				}
+			});
 	}
 
 	#cleanupRenderView() {
 		// stop render loop
-		this.#active = false;
+		if (this.#scene) {
+			// remove all meshes from the scene
+			this.#meshArray.forEach((mesh) => {
+				(this.#scene as Scene).remove(mesh);
+			});
+		}
+		// dispose of all geometry
+		this.#geometryArray.forEach((geo) => {
+			geo.dispose();
+		});
+		// dispose of all materials
+		this.#materialArray.forEach((mat) => {
+			mat.dispose();
+		});
+		// dispose of the renderer and context
+		if (this.#renderer) {
+			this.#renderer.dispose();
+			// shouldn't dispose() already do this for me? kind of silly I guess
+			this.#renderer.forceContextLoss();
+			// Don't actually seem to need to delete the context and dom by hand
+			// typescript being smelly, need as any
+			// delete (this.#renderer as any).context;
+			// delete (this.#renderer as any).domElement;
+		}
 	}
 }

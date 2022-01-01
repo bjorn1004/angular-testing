@@ -7,6 +7,7 @@
     <mat-nav-list>
       <a mat-list-item [routerLink]="['/']">Home</a>
       <a mat-list-item [routerLink]="['threejs']">ThreeJS</a>
+      <a mat-list-item [routerLink]="['games']">Games</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -21,7 +22,7 @@
       </button>
       <span>Bjorn's testing proving grounds</span>
       <span class="spacer"></span>
-      <a href="https://neocities.org" *ngIf="onNeocities() && !(isHandset$ | async)" ><img alt="Neocities" src="assets/neocities.png"></a>
+      <a href="https://neocities.org" *ngIf="onNeocities() && (isHandset$ | async) === false" ><img alt="Neocities" src="assets/neocities.png"></a>
     </mat-toolbar>
     <main>
       <ng-content></ng-content>

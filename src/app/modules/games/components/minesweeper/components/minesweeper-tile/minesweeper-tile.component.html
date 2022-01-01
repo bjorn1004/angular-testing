@@ -1,0 +1,11 @@
+<button mat-flat-button 
+    [color]="clicked ? (tileState === tileStateEnum.MINE ? 'warn': 'accent') : 'primary'"
+    [ngClass]="'neighbours-'+tileState"
+    [disableRipple]="clicked"
+    (click)="onClicked()"
+    (contextmenu)="onMarked()">
+    <ng-template [ngIf]="!marked"  [ngIfElse]="flagIcon">
+        {{clicked ? (tileState === tileStateEnum.MINE ? 'X' : tileState) : '' }}
+    </ng-template>
+    <ng-template #flagIcon><mat-icon>flag</mat-icon></ng-template>
+</button>

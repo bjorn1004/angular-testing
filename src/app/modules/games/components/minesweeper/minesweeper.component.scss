@@ -1,0 +1,30 @@
+:host {
+	display: flex;
+	mat-card {
+		padding: 3em;
+		margin: auto;
+		mat-card-content {
+			margin-bottom: 1em;
+		}
+		mat-card-footer {
+			display: flex;
+			flex-direction: column;
+			div.options {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				mat-button-toggle-group {
+					width: 50%;
+					mat-button-toggle {
+						width: calc(100% / 3);
+					}
+					margin-bottom: 0.5em;
+				}
+			}
+			div.summary {
+				display: flex;
+				justify-content: space-around;
+			}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+:host {
+	display: inline-block;
+	mat-card {
+		float: left;
+		mat-card-content {
+			display: grid;
+			gap: 0.1em;
+		}
+	}
+	.overlay {
+		display: flex;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+		background: #0000009e;
+	}
+}
