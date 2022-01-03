@@ -16,11 +16,13 @@
 	</mat-card-actions>
 	<mat-card-footer>
 		<div class="options">
+			<h3 class="option-label">Size</h3>
 			<mat-button-toggle-group [value]="sizeValueMatch()" (valueChange)="onSizeChange($event)">
 				<mat-button-toggle [value]="7">Small</mat-button-toggle>
 				<mat-button-toggle [value]="10">Medium</mat-button-toggle>
 				<mat-button-toggle [value]="15">Big</mat-button-toggle>
 			</mat-button-toggle-group>
+			<h3 class="option-label">Mines</h3>
 			<mat-button-toggle-group [value]="minePerc" (valueChange)="onMinePercChange($event)">
 				<mat-button-toggle [value]="0.1">Sparce</mat-button-toggle>
 				<mat-button-toggle [value]="0.15">Normal</mat-button-toggle>
@@ -28,41 +30,52 @@
 			</mat-button-toggle-group>
 			<details>
 				<summary>Advanced</summary>
-				<div class="dimension-sliders">
-					<mat-slider
-						thumbLabel
-						min="6"
-						max="20"
-						step="1"
-						[value]="width"
-						(valueChange)="onWidthChange($event)"
-					></mat-slider>
-					<mat-slider
-						thumbLabel
-						min="6"
-						max="20"
-						step="1"
-						[value]="height"
-						(valueChange)="onHeightChange($event)"
-					></mat-slider>
-				</div>
-				<div class="mine-slider">
-					<mat-slider
-						thumbLabel
-						[displayWith]="formatMinePerc"
-						min="0.05"
-						max="0.4"
-						step="0.01"
-						[value]="minePerc"
-						(valueChange)="onMinePercChange($event)"
-					></mat-slider>
+				<div class="sliders">
+					<div class="dimension-sliders">
+						<div class="slider">
+							<span>Width</span>
+							<mat-slider
+								thumbLabel
+								min="6"
+								max="20"
+								step="1"
+								[value]="width"
+								(valueChange)="onWidthChange($event)"
+							></mat-slider>
+						</div>
+						<div class="slider">
+							<span>Height</span>
+							<mat-slider
+								thumbLabel
+								min="6"
+								max="20"
+								step="1"
+								[value]="height"
+								(valueChange)="onHeightChange($event)"
+							></mat-slider>
+						</div>
+					</div>
+					<div class="slider">
+						<span>Mine amount</span>
+						<div class="mine-slider">
+							<mat-slider
+								thumbLabel
+								[displayWith]="formatMinePerc"
+								min="0.05"
+								max="0.35"
+								step="0.01"
+								[value]="minePerc"
+								(valueChange)="onMinePercChange($event)"
+							></mat-slider>
+						</div>
+					</div>
 				</div>
 			</details>
 		</div>
 		<div class="summary">
 			<span>Time: {{ formatTime() }}</span>
 			<span>Mines left: {{ getMinesRemaining() }}</span>
-			<span>field swept: {{ getFieldSwept() }}%</span>
+			<span>Field swept: {{ fieldSweptPreLose !== undefined ? fieldSweptPreLose : getFieldSwept() }}%</span>
 		</div>
 	</mat-card-footer>
 </mat-card>

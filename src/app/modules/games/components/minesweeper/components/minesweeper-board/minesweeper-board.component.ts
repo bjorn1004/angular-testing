@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Note } from 'src/app/modules/games/contracts/note';
+import { AudioService } from 'src/app/modules/games/services/audio.service';
 import { GameState } from '../../contracts/game-state';
 import { TileState } from '../../contracts/neighbouring-mines';
 import { Tile } from '../../contracts/tile';
@@ -18,7 +20,7 @@ export class MinesweeperBoardComponent implements OnInit {
 
 	#gameState: GameState = GameState.NEW;
 
-	constructor() {}
+	constructor(private audioService: AudioService) {}
 
 	public get gameStateEnum(): typeof GameState {
 		return GameState;
@@ -114,14 +116,16 @@ export class MinesweeperBoardComponent implements OnInit {
 				clickAllAdjecent(this.tileList as Tile[], tile.id, this.width);
 				this.#checkWin();
 			}
+			this.audioService.playBlip(Note.A4);
 			this.#checkWin();
 		} else {
 			// dead lol
+			this.gameState = GameState.LOST;
+			this.audioService.playBlip(Note.A3);
 			// reveal all tiles
 			(this.tileList as Tile[]).forEach((_tile) => {
 				_tile.isClicked = true;
 			});
-			this.gameState = GameState.LOST;
 		}
 		return;
 	}
@@ -130,6 +134,7 @@ export class MinesweeperBoardComponent implements OnInit {
 	 * onMarkTile
 	 */
 	public onMarkTile(tile: Tile) {
+		this.audioService.playBlip(tile.isMarked ? Note.B4 : Note.G4);
 		this.#checkWin();
 	}
 

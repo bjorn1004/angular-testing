@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { AudioService } from 'src/app/modules/games/services/audio.service';
 import { TileState } from '../../contracts/neighbouring-mines';
 
 @Component({
@@ -7,7 +8,7 @@ import { TileState } from '../../contracts/neighbouring-mines';
 	styleUrls: ['./minesweeper-tile.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MinesweeperTileComponent implements OnInit {
+export class MinesweeperTileComponent {
 	@Input() id = -1;
 	@Input() tileState = TileState.NONE;
 	@Input() clicked = false;
@@ -15,32 +16,24 @@ export class MinesweeperTileComponent implements OnInit {
 	@Input() marked = false;
 	@Output() markedChange = new EventEmitter<boolean>();
 
-	constructor() {}
-
 	public get tileStateEnum(): typeof TileState {
 		return TileState;
-	}
-
-	ngOnInit(): void {
-		if (this.id === -1) {
-			throw new Error('ID not instantiated');
-		}
 	}
 
 	/**
 	 * onClicked
 	 */
-	public onClicked() {
+	public onClicked(): void {
 		if (!this.clicked && !this.marked) {
 			this.clicked = true;
-			return this.clickedChange.emit(this.clicked);
+			this.clickedChange.emit(this.clicked);
 		}
 	}
 
 	/**
 	 * onMarked
 	 */
-	public onMarked() {
+	public onMarked(): false {
 		if (!this.clicked) {
 			this.marked = !this.marked;
 			this.markedChange.emit(this.marked);

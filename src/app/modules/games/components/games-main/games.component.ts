@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
-  selector: 'app-games',
-  templateUrl: './games.component.html',
-  styleUrls: ['./games.component.scss']
+	selector: 'app-games',
+	templateUrl: './games.component.html',
+	styleUrls: ['./games.component.scss'],
 })
-export class GamesComponent implements OnInit {
+export class GamesComponent implements OnInit, OnDestroy {
+	constructor(public audioService: AudioService) {}
 
-  constructor() { }
+	ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
+	ngOnDestroy(): void {
+		this.audioService.stopAll();
+	}
 
+	public onVolumeChange(volumeChange: MatSliderChange) {
+		if (volumeChange.value !== null) {
+			this.audioService.masterVolume = volumeChange.value;
+		}
+		this.audioService.playBlip();
+	}
 }
