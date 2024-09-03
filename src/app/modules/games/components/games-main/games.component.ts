@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSliderChange } from '@angular/material/slider';
 import { AudioService } from '../../services/audio.service';
 
 @Component({
@@ -16,9 +15,9 @@ export class GamesComponent implements OnInit, OnDestroy {
 		this.audioService.stopAll();
 	}
 
-	public onVolumeChange(volumeChange: MatSliderChange) {
-		if (volumeChange.value !== null) {
-			this.audioService.masterVolume = volumeChange.value;
+	public onVolumeChange(value: number) {
+		if (value !== null) {
+			this.audioService.masterVolume = value;
 		}
 		this.audioService.playBlip();
 	}

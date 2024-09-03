@@ -31,6 +31,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -82,18 +83,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-app:build"
+            "buildTarget": "angular-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-app:build:production"
+              "buildTarget": "angular-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-app:build"
+            "buildTarget": "angular-app:build"
           }
         },
         "test": {
@@ -109,6 +110,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -137,6 +139,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular-app"
+  }
 }

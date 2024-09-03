@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { NavComponent } from './nav/nav.component';
 import { SharedModule } from './modules/shared/shared.module';
 import { HomeModule } from './modules/home/home.module';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
 	declarations: [AppComponent, NavComponent],
@@ -25,7 +26,9 @@ import { HomeModule } from './modules/home/home.module';
 		SharedModule,
 		HomeModule,
 	],
-	providers: [],
+	providers: [
+    provideAnimationsAsync()
+  ],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

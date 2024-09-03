@@ -39,9 +39,9 @@
 								min="6"
 								max="20"
 								step="1"
-								[value]="width"
-								(valueChange)="onWidthChange($event)"
-							></mat-slider>
+							>
+						<input matSliderThumb [value]="width" (valueChange)="onWidthChange($event)">
+						</mat-slider>
 						</div>
 						<div class="slider">
 							<span>Height</span>
@@ -50,9 +50,12 @@
 								min="6"
 								max="20"
 								step="1"
-								[value]="height"
+							>
+						<input matSliderThumb
+						[value]="height"
 								(valueChange)="onHeightChange($event)"
-							></mat-slider>
+						>
+						</mat-slider>
 						</div>
 					</div>
 					<div class="slider">
@@ -64,9 +67,12 @@
 								min="0.05"
 								max="0.35"
 								step="0.01"
-								[value]="minePerc"
-								(valueChange)="onMinePercChange($event)"
-							></mat-slider>
+							>
+						<input matSliderThumb
+						[value]="minePerc"
+						(valueChange)="onMinePercChange($event)"
+						>
+						</mat-slider>
 						</div>
 					</div>
 				</div>
